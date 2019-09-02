@@ -1,0 +1,25 @@
+.Hero {
+  background: black;
+  height: 30vh;
+}
+
+.HeroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  
+}
+
+
+p {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 2.5rem;
+}
+h1 {
+  font-size: 2em;
+  font-weight: 600;
+  text-align: center;
+}
