@@ -6,6 +6,11 @@ const Products = () => {
   const [sortStatus, setSortStatus] = useState({text: '', sorted: false});
   const [products, setProducts] = useState([]);
   const [adTracker, setAdTracker] = useState({});
+  const [pageNum, setPageNum] = useState(1);
+
+  const generateRandomNum = () => {
+    return Math.floor(Math.random() * 99) + 1;
+  }
 
   useEffect(() => {
     handleAdNum()
@@ -13,22 +18,23 @@ const Products = () => {
   )
 
   const fetchProducts = (num) => {
+    const firstUrl = `https://unsplash.it/320/200?image=${num}`
+    const secondRandNum = generateRandomNum();
+    const secondUrl = `https://unsplash.it/320/200?image=${secondRandNum}`
     
-    fetch('http://localhost:3000/products?_limit=19')
+    fetch(`http://localhost:3000/products?_page=${pageNum}&_limit=38`)
     .then(res => res.json())
     .then(data => {
-      const url = `https://unsplash.it/320/200?image=${num}`
-      setProducts([...products, ...data, {id: num, url: url}])
+      const productArray = [...data]
+      productArray.splice(19, 0, {id: num, url: firstUrl});
+      productArray.push({id: secondRandNum, url: secondUrl});
+      setProducts([...products, ...productArray])
     })
     
   }
 
-  const generateRandomNum = () => {
-    return Math.floor(Math.random() * 99) + 1;
-  }
-
   const handleAdNum = () => {
-    const num = generateRandomNum()
+    const num = generateRandomNum();
     const oldNum = adTracker.adNum ? adTracker.adNum : 0;
     const adUpdate = {
       adNum: num,
@@ -54,10 +60,10 @@ const Products = () => {
   }
 
   const sortProducts = () => {
-    if (!sortStatus.sorted) return products
+    if (!sortStatus.sorted) return products.slice(0, products.length - 20);
     const sortText = sortStatus.text
     const sortedProducts = [...products].sort((a, b) => b[sortText] - a[sortText])
-    return sortedProducts
+    return sortedProducts.slice(0, sortedProducts.length - 20);
   }
 
   return (
