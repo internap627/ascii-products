@@ -27,7 +27,7 @@ const Card = ({ product }) => {
     const day = createdOn.getDate();
     createdOn.setHours(0,0,0,0);
     today.setHours(0,0,0,0)
-    console.log(createdOn)
+
     var diff = (+today - +createdOn)/msInDay
     if (diff < 7) {
       return `${diff} days ago`
@@ -48,7 +48,7 @@ const Card = ({ product }) => {
       </div>
        : 
        <div className='Card'>
-      <img src={product.url} />
+      <img src={product.url} alt='Company ad' />
       </div>
       }
     </Fragment>
