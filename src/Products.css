@@ -21,12 +21,26 @@ button:focus {
   outline: none;
 }
 
+.ProductsGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .Products {
   margin: 50px 40px 100px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
   justify-items: center;
+  align-items: center;
+}
+
+.bottomRef {
+  width: 500px;
+  height: 10px;
+  background: red;
 }
 
 .active {

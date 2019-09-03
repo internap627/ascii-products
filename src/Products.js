@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Products.css';
 import Card from './Card';
 
@@ -7,6 +7,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [adTracker, setAdTracker] = useState({});
   const [pageNum, setPageNum] = useState(1);
+  const containerRef = useRef();
+  const bottomRef = useRef();
 
   const generateRandomNum = () => {
     return Math.floor(Math.random() * 99) + 1;
@@ -14,6 +16,19 @@ const Products = () => {
 
   useEffect(() => {
     handleAdNum()
+    }, []
+  )
+
+  useEffect(() => {
+    const scroll = new IntersectionObserver(scrollCallback, {
+      root: containerRef.current,
+      threshold: 1
+      
+    })
+      const target = bottomRef.current
+      scroll.observe(target)
+    
+    return () => scroll.disconnect()
     }, []
   )
 
@@ -66,8 +81,13 @@ const Products = () => {
     return sortedProducts.slice(0, sortedProducts.length - 20);
   }
 
+  const scrollCallback = (entries) => {
+      setInterval(() => console.log(entries[0]), 3000)
+    
+  }
+
   return (
-    <div className='ProductsGroup'>
+    <div className='ProductsGroup' ref={containerRef}>
       <div className='ButtonGroup'>
         <h1>Sorting Options</h1>
         <div className='Buttons'>
@@ -79,6 +99,7 @@ const Products = () => {
       <div className='Products'>
         {sortProducts().map(product => <Card key={product.id} product={product} />)}
       </div>
+      <div className='bottomRef' ref={bottomRef}></div>
     </div>
   )
 }

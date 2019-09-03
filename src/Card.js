@@ -47,7 +47,7 @@ const Card = ({ product }) => {
       <h3>Date: {dateString}</h3>
       </div>
        : 
-       <div className='Card'>
+       <div className='Card' id='url'>
       <img src={product.url} alt='Company ad' />
       </div>
       }
