@@ -6,9 +6,8 @@ const Products = () => {
   const [sortStatus, setSortStatus] = useState({text: '', sorted: false});
   const [products, setProducts] = useState([]);
   const [adTracker, setAdTracker] = useState({});
+  const [loading, setLoading] = useState('false');
   const [pageNum, setPageNum] = useState(1);
-  const containerRef = useRef();
-  const bottomRef = useRef();
 
   const generateRandomNum = () => {
     return Math.floor(Math.random() * 99) + 1;
@@ -20,17 +19,21 @@ const Products = () => {
   )
 
   useEffect(() => {
-    const scroll = new IntersectionObserver(scrollCallback, {
-      root: containerRef.current,
-      threshold: 1
-      
-    })
-      const target = bottomRef.current
-      scroll.observe(target)
+    window.addEventListener('scroll', loadMore, true);
     
-    return () => scroll.disconnect()
-    }, []
+        loadMore()
+    
+  }, []
   )
+
+  const loadMore = () => {
+    if (window.scrollY > window.outerHeight)
+    {
+      setTimeout(() => {
+        console.log('fetching more data....')
+     }, 2000);
+    }
+  }
 
   const fetchProducts = (num) => {
     const firstUrl = `https://unsplash.it/320/200?image=${num}`
@@ -45,10 +48,11 @@ const Products = () => {
       productArray.push({id: secondRandNum, url: secondUrl});
       setProducts([...products, ...productArray])
     })
-    
+    setTimeout(() => setLoading(false), 2000);
   }
 
   const handleAdNum = () => {
+    setLoading(true);
     const num = generateRandomNum();
     const oldNum = adTracker.adNum ? adTracker.adNum : 0;
     const adUpdate = {
@@ -81,13 +85,8 @@ const Products = () => {
     return sortedProducts.slice(0, sortedProducts.length - 20);
   }
 
-  const scrollCallback = (entries) => {
-      setInterval(() => console.log(entries[0]), 3000)
-    
-  }
-
   return (
-    <div className='ProductsGroup' ref={containerRef}>
+    <div className='ProductsGroup'>
       <div className='ButtonGroup'>
         <h1>Sorting Options</h1>
         <div className='Buttons'>
@@ -99,7 +98,7 @@ const Products = () => {
       <div className='Products'>
         {sortProducts().map(product => <Card key={product.id} product={product} />)}
       </div>
-      <div className='bottomRef' ref={bottomRef}></div>
+      {loading ? <div className='spinner'></div> : null}
     </div>
   )
 }
