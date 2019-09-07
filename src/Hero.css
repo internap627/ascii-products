@@ -1,5 +1,5 @@
 .Hero {
-  background: black;
+  background: #252934;
   height: 30vh;
 }
 
@@ -8,8 +8,8 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  color: white;
-  
+  color: #60bfbc;
+  text-shadow: 0px 0px 2px #b8c2bb;
 }
 
 
